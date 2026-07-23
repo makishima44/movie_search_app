@@ -5,5 +5,14 @@ const movieSearchForm = document.getElementById("movieSearchForm");
 
 movieSearchForm.addEventListener("submit", function (event) {
   event.preventDefault();
-  console.log("Поиск");
+
+  const currentMovieTitle = movieSearchInput.value.trim();
+
+  if (!currentMovieTitle) {
+    movieSearchInput.focus();
+    return;
+  }
+
+  console.log(currentMovieTitle);
+  movieSearchInput.value = "";
 });
