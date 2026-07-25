@@ -1,0 +1,16 @@
+import { API_KEY } from "./config.js";
+
+export async function searchMovieByTitle(title) {
+  try {
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${title}`);
+
+    if (!response.ok) {
+      throw new Error("Ошибка сети");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Произошла ошибка при запросе:", error);
+  }
+}

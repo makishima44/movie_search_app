@@ -1,9 +1,10 @@
-const movieSearchButton = document.getElementById("movieSearchButton");
+import { searchMovieByTitle } from "./api.js";
+
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieContainer = document.getElementById("movieContainer");
 const movieSearchForm = document.getElementById("movieSearchForm");
 
-movieSearchForm.addEventListener("submit", function (event) {
+movieSearchForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
   const currentMovieTitle = movieSearchInput.value.trim();
@@ -13,6 +14,8 @@ movieSearchForm.addEventListener("submit", function (event) {
     return;
   }
 
-  console.log(currentMovieTitle);
+  const movieData = await searchMovieByTitle(currentMovieTitle);
+  console.log(movieData);
+
   movieSearchInput.value = "";
 });
