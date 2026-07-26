@@ -1,7 +1,7 @@
 import { searchMovieByTitle } from "./api.js";
+import { showMessage, renderMovies } from "./ui.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
-const movieContainer = document.getElementById("movieContainer");
 const movieSearchForm = document.getElementById("movieSearchForm");
 
 movieSearchForm.addEventListener("submit", async function (event) {
@@ -15,7 +15,14 @@ movieSearchForm.addEventListener("submit", async function (event) {
   }
 
   const movieData = await searchMovieByTitle(currentMovieTitle);
-  console.log(movieData);
+
+  if (movieData.Response === "False") {
+    showMessage(movieData.Error);
+    return;
+  }
+
+  const movies = movieData.Search;
+  renderMovies(movies);
 
   movieSearchInput.value = "";
 });
