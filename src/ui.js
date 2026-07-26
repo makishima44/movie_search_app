@@ -1,11 +1,15 @@
 const movieContainer = document.getElementById("movieContainer");
 
 export function showMessage(message) {
-  console.log(message);
+  clearMovieList();
+
+  const errorMessage = document.createElement("p");
+  errorMessage.textContent = message;
+
+  movieContainer.append(errorMessage);
 }
 
 export function renderMovies(movies) {
-  movieContainer.textContent = "";
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
 
@@ -19,4 +23,8 @@ export function renderMovies(movies) {
 
     movieContainer.append(movieCard);
   });
+}
+
+export function clearMovieList() {
+  movieContainer.textContent = "";
 }

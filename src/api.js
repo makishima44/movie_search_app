@@ -11,6 +11,6 @@ export async function searchMovieByTitle(title) {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.error("Произошла ошибка при запросе:", error);
+    throw new Error(`Произошла ошибка при запросе:, ${error}`);
   }
 }
