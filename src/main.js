@@ -29,6 +29,7 @@ movieSearchForm.addEventListener("submit", async function (event) {
 
     const movies = movieData.Search;
     renderMovies(movies);
+    console.log(movies);
 
     movieSearchInput.value = "";
   } catch (error) {

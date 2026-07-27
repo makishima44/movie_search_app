@@ -14,6 +14,7 @@ export function showMessage(message) {
 export function renderMovies(movies) {
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
+    movieCard.classList.add("movie-card");
 
     const movieTitle = document.createElement("h2");
     movieTitle.textContent = movie.Title;
@@ -21,8 +22,22 @@ export function renderMovies(movies) {
     const movieYear = document.createElement("p");
     movieYear.textContent = movie.Year;
 
-    movieCard.append(movieTitle, movieYear);
+    if (movie.Poster === "N/A") {
+      const noPosterText = document.createElement("p");
 
+      noPosterText.textContent = "Постер отсутствует";
+      movieCard.append(noPosterText);
+    } else {
+      const moviePoster = document.createElement("img");
+
+      moviePoster.classList.add("movie-poster");
+      moviePoster.src = movie.Poster;
+      moviePoster.alt = `Постер фильма ${movie.Title}`;
+
+      movieCard.append(moviePoster);
+    }
+
+    movieCard.append(movieTitle, movieYear);
     movieContainer.append(movieCard);
   });
 }
