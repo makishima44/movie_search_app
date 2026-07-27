@@ -1,5 +1,5 @@
 import { searchMovieByTitle } from "./api.js";
-import { showMessage, renderMovies, clearMovieList } from "./ui.js";
+import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, disableSearchButton, enableSearchButton } from "./ui.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
@@ -16,6 +16,9 @@ movieSearchForm.addEventListener("submit", async function (event) {
 
   clearMovieList();
 
+  showLoading();
+  disableSearchButton();
+
   try {
     const movieData = await searchMovieByTitle(currentMovieTitle);
 
@@ -30,5 +33,8 @@ movieSearchForm.addEventListener("submit", async function (event) {
     movieSearchInput.value = "";
   } catch (error) {
     showMessage(error.message);
+  } finally {
+    hideLoading();
+    enableSearchButton();
   }
 });

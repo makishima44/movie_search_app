@@ -1,4 +1,6 @@
 const movieContainer = document.getElementById("movieContainer");
+const loadingContainer = document.getElementById("loadingContainer");
+const movieSearchButton = document.getElementById("movieSearchButton");
 
 export function showMessage(message) {
   clearMovieList();
@@ -27,4 +29,20 @@ export function renderMovies(movies) {
 
 export function clearMovieList() {
   movieContainer.textContent = "";
+}
+
+export function showLoading() {
+  loadingContainer.textContent = "Загрузка...";
+}
+
+export function hideLoading() {
+  loadingContainer.textContent = "";
+}
+
+export function disableSearchButton() {
+  movieSearchButton.disabled = true;
+}
+
+export function enableSearchButton() {
+  movieSearchButton.disabled = false;
 }
