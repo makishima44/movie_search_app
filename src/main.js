@@ -1,8 +1,18 @@
-import { searchMovieByTitle } from "./api.js";
+import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
 import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, disableSearchButton, enableSearchButton } from "./ui.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
+
+async function handleMovieDetails(id) {
+  try {
+    const movieDetails = await fetchMovieDetails(id);
+
+    console.log(movieDetails);
+  } catch (error) {
+    console.log(error.message);
+  }
+}
 
 movieSearchForm.addEventListener("submit", async function (event) {
   event.preventDefault();
@@ -28,7 +38,7 @@ movieSearchForm.addEventListener("submit", async function (event) {
     }
 
     const movies = movieData.Search;
-    renderMovies(movies);
+    renderMovies(movies, handleMovieDetails);
     console.log(movies);
 
     movieSearchInput.value = "";

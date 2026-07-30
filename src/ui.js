@@ -11,7 +11,7 @@ export function showMessage(message) {
   movieContainer.append(errorMessage);
 }
 
-export function renderMovies(movies) {
+export function renderMovies(movies, onDetailsClick) {
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
@@ -22,22 +22,26 @@ export function renderMovies(movies) {
     const movieYear = document.createElement("p");
     movieYear.textContent = movie.Year;
 
+    const movieDetailsButton = document.createElement("button");
+    movieDetailsButton.classList.add("movie-details-button");
+    movieDetailsButton.textContent = "Подробнее";
+    movieDetailsButton.addEventListener("click", () => {
+      onDetailsClick(movie.imdbID);
+    });
+
     if (movie.Poster === "N/A") {
       const noPosterText = document.createElement("p");
-
       noPosterText.textContent = "Постер отсутствует";
       movieCard.append(noPosterText);
     } else {
       const moviePoster = document.createElement("img");
-
       moviePoster.classList.add("movie-poster");
       moviePoster.src = movie.Poster;
       moviePoster.alt = `Постер фильма ${movie.Title}`;
-
       movieCard.append(moviePoster);
     }
 
-    movieCard.append(movieTitle, movieYear);
+    movieCard.append(movieTitle, movieYear, movieDetailsButton);
     movieContainer.append(movieCard);
   });
 }

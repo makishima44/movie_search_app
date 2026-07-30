@@ -14,3 +14,18 @@ export async function searchMovieByTitle(title) {
     throw new Error(`Произошла ошибка при запросе:, ${error}`);
   }
 }
+
+export async function fetchMovieDetails(id) {
+  try {
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&i=${id}`);
+
+    if (!response.ok) {
+      throw new Error("Ошибка сети");
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    throw new Error(`Произошла ошибка при запросе:, ${error}`);
+  }
+}
