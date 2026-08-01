@@ -1,5 +1,5 @@
 import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
-import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, disableSearchButton, enableSearchButton } from "./ui.js";
+import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, disableSearchButton, enableSearchButton, showMovieDetails } from "./ui.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
@@ -7,8 +7,7 @@ const movieSearchForm = document.getElementById("movieSearchForm");
 async function handleMovieDetails(id) {
   try {
     const movieDetails = await fetchMovieDetails(id);
-
-    console.log(movieDetails);
+    showMovieDetails(movieDetails);
   } catch (error) {
     console.log(error.message);
   }

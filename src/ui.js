@@ -46,6 +46,45 @@ export function renderMovies(movies, onDetailsClick) {
   });
 }
 
+export function showMovieDetails(movie) {
+  const { Title, Year, Genre, Director, Poster, Plot } = movie;
+
+  clearMovieList();
+
+  const movieDetailsCard = document.createElement("div");
+  movieDetailsCard.classList.add("movie-details-card");
+
+  const movieTitle = document.createElement("h2");
+  movieTitle.textContent = `Название: ${Title}`;
+
+  const movieYear = document.createElement("p");
+  movieYear.textContent = `Год: ${Year}`;
+
+  const movieGenre = document.createElement("p");
+  movieGenre.textContent = `Жанр: ${Genre}`;
+
+  const movieDirector = document.createElement("p");
+  movieDirector.textContent = `Режиссёр: ${Director}`;
+
+  const moviePlot = document.createElement("p");
+  moviePlot.textContent = `Сюжет: ${Plot}`;
+
+  if (Poster === "N/A") {
+    const noPosterText = document.createElement("p");
+    noPosterText.textContent = "Постер отсутствует";
+    movieDetailsCard.append(noPosterText);
+  } else {
+    const moviePoster = document.createElement("img");
+    moviePoster.classList.add("movie-poster");
+    moviePoster.src = Poster;
+    moviePoster.alt = `Постер фильма ${Title}`;
+    movieDetailsCard.append(moviePoster);
+  }
+
+  movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, moviePlot);
+  movieContainer.append(movieDetailsCard);
+}
+
 export function clearMovieList() {
   movieContainer.textContent = "";
 }
