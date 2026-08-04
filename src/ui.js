@@ -110,3 +110,19 @@ export function disableSearchButton() {
 export function enableSearchButton() {
   movieSearchButton.disabled = false;
 }
+
+export function changeSearchButtonText(text) {
+  movieSearchButton.textContent = text;
+}
+
+export function startSearch() {
+  showLoading();
+  changeSearchButtonText("Ищу...");
+  disableSearchButton();
+}
+
+export function finishSearch() {
+  hideLoading();
+  changeSearchButtonText("Поиск");
+  enableSearchButton();
+}
