@@ -1,13 +1,13 @@
 import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
 import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, disableSearchButton, enableSearchButton, showMovieDetails } from "./ui.js";
+import { setMovies, getMovies } from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
-let currentMovies = [];
 
 function handleBackToResults() {
   clearMovieList();
-  renderMovies(currentMovies, handleMovieDetails);
+  renderMovies(getMovies(), handleMovieDetails);
 }
 
 async function handleMovieDetails(id) {
@@ -43,7 +43,7 @@ movieSearchForm.addEventListener("submit", async function (event) {
     }
 
     const movies = movieData.Search;
-    currentMovies = movies;
+    setMovies(movies);
     renderMovies(movies, handleMovieDetails);
     console.log(movies);
 
