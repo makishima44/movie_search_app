@@ -46,7 +46,7 @@ export function renderMovies(movies, onDetailsClick) {
   });
 }
 
-export function showMovieDetails(movie) {
+export function showMovieDetails(movie, onBackClick) {
   const { Title, Year, Genre, Director, Poster, Plot } = movie;
 
   clearMovieList();
@@ -81,7 +81,13 @@ export function showMovieDetails(movie) {
     movieDetailsCard.append(moviePoster);
   }
 
-  movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, moviePlot);
+  const backButton = document.createElement("button");
+  backButton.textContent = "← Назад к результатам";
+  backButton.addEventListener("click", () => {
+    onBackClick();
+  });
+
+  movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, moviePlot, backButton);
   movieContainer.append(movieDetailsCard);
 }
 

@@ -3,11 +3,17 @@ import { showMessage, renderMovies, clearMovieList, showLoading, hideLoading, di
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
+let currentMovies = [];
+
+function handleBackToResults() {
+  clearMovieList();
+  renderMovies(currentMovies, handleMovieDetails);
+}
 
 async function handleMovieDetails(id) {
   try {
     const movieDetails = await fetchMovieDetails(id);
-    showMovieDetails(movieDetails);
+    showMovieDetails(movieDetails, handleBackToResults);
   } catch (error) {
     console.log(error.message);
   }
@@ -37,6 +43,7 @@ movieSearchForm.addEventListener("submit", async function (event) {
     }
 
     const movies = movieData.Search;
+    currentMovies = movies;
     renderMovies(movies, handleMovieDetails);
     console.log(movies);
 
