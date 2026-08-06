@@ -1,8 +1,8 @@
 import { API_KEY } from "./config.js";
 
-export async function searchMovieByTitle(title) {
+export async function searchMovieByTitle(title, page = 1) {
   try {
-    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${title}`);
+    const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${title}&page=${page}`);
 
     if (!response.ok) {
       throw new Error("Ошибка сети");
