@@ -1,6 +1,6 @@
 import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
-import { showMessage, renderMovies, clearMovieList, showMovieDetails, startSearch, finishSearch } from "./ui.js";
-import { setMovies, getMovies, setMoviesQuery, setMoviesPage, setTotalResults } from "./state.js";
+import { showMessage, renderMovies, clearMovieList, showMovieDetails, startSearch, finishSearch, renderPagination } from "./ui.js";
+import { setMovies, getMovies, setMoviesQuery, setMoviesPage, setTotalResults, getMoviesPage, getMoviesQuery } from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
@@ -8,6 +8,14 @@ const movieSearchForm = document.getElementById("movieSearchForm");
 function handleBackToResults() {
   clearMovieList();
   renderMovies(getMovies(), handleMovieDetails);
+}
+
+async function handleNextPage() {
+  const query = getMoviesQuery();
+  const currentPage = getMoviesPage();
+  const nextPage = currentPage + 1;
+
+  await loadMovies(query, nextPage);
 }
 
 async function handleMovieDetails(id) {
@@ -45,6 +53,7 @@ async function loadMovies(query, page = 1) {
     setTotalResults(movieData.totalResults);
 
     renderMovies(movies, handleMovieDetails);
+    renderPagination(handleNextPage);
   } catch (error) {
     showMessage(error.message);
   } finally {

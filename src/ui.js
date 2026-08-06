@@ -1,4 +1,5 @@
 const movieContainer = document.getElementById("movieContainer");
+const paginationContainer = document.getElementById("paginationContainer");
 const loadingContainer = document.getElementById("loadingContainer");
 const movieSearchButton = document.getElementById("movieSearchButton");
 
@@ -89,6 +90,18 @@ export function showMovieDetails(movie, onBackClick) {
 
   movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, moviePlot, backButton);
   movieContainer.append(movieDetailsCard);
+}
+
+export function renderPagination(callback) {
+  paginationContainer.textContent = "";
+
+  const nextButton = document.createElement("button");
+  nextButton.textContent = "Следующая";
+  nextButton.addEventListener("click", () => {
+    callback();
+  });
+
+  paginationContainer.append(nextButton);
 }
 
 export function clearMovieList() {
