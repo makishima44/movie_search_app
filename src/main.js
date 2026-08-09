@@ -10,9 +10,15 @@ function handleBackToResults() {
   renderMovies(getMovies(), handleMovieDetails);
 }
 
+// Функция для проверки, доступна ли следующая страница
 function hasNextPage(totalResults, currentPage) {
   const totalPages = Math.ceil(Number(totalResults) / 10);
   return currentPage < totalPages;
+}
+
+// Функция для проверки, доступна ли предыдущая страница
+function hasPreviousPage(currentPage) {
+  return currentPage > 1;
 }
 
 async function handleNextPage() {
@@ -21,6 +27,14 @@ async function handleNextPage() {
   const nextPage = currentPage + 1;
 
   await loadMovies(query, nextPage);
+}
+
+async function handlePreviousPage() {
+  const query = getMoviesQuery();
+  const currentPage = getMoviesPage();
+  const previousPage = currentPage - 1;
+
+  await loadMovies(query, previousPage);
 }
 
 async function handleMovieDetails(id) {
@@ -45,6 +59,7 @@ async function loadMovies(query, page = 1) {
 
   try {
     const movieData = await searchMovieByTitle(normalizedQuery, page);
+
     if (movieData.Response === "False") {
       showMessage(movieData.Error);
       return;
@@ -58,9 +73,10 @@ async function loadMovies(query, page = 1) {
     setTotalResults(movieData.totalResults);
 
     const nextPageAvailable = hasNextPage(movieData.totalResults, page);
+    const previousPageAvailable = hasPreviousPage(page);
 
     renderMovies(movies, handleMovieDetails);
-    renderPagination(handleNextPage, nextPageAvailable);
+    renderPagination(handleNextPage, nextPageAvailable, handlePreviousPage, previousPageAvailable);
   } catch (error) {
     showMessage(error.message);
   } finally {

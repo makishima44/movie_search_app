@@ -92,20 +92,27 @@ export function showMovieDetails(movie, onBackClick) {
   movieContainer.append(movieDetailsCard);
 }
 
-export function renderPagination(callback, nextPageAvailable) {
+export function renderPagination(nextPageCallback, nextPageAvailable, previousPageCallback, previousPageAvailable) {
   paginationContainer.textContent = "";
 
-  if (!nextPageAvailable) {
-    return;
+  if (previousPageAvailable) {
+    const previousButton = document.createElement("button");
+    previousButton.textContent = "Предыдущая";
+    previousButton.addEventListener("click", () => {
+      previousPageCallback();
+    });
+
+    paginationContainer.append(previousButton);
   }
 
-  const nextButton = document.createElement("button");
-  nextButton.textContent = "Следующая";
-  nextButton.addEventListener("click", () => {
-    callback();
-  });
-
-  paginationContainer.append(nextButton);
+  if (nextPageAvailable) {
+    const nextButton = document.createElement("button");
+    nextButton.textContent = "Следующая";
+    nextButton.addEventListener("click", () => {
+      nextPageCallback();
+    });
+    paginationContainer.append(nextButton);
+  }
 }
 
 export function clearMovieList() {
