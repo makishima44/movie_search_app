@@ -1,6 +1,6 @@
 import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
 import { showMessage, renderMovies, clearMovieList, showMovieDetails, startSearch, finishSearch, renderPagination } from "./ui.js";
-import { setMovies, getMovies, setMoviesQuery, setMoviesPage, setTotalResults, getMoviesPage, getMoviesQuery } from "./state.js";
+import { setMovies, getMovies, setMoviesQuery, setMoviesPage, setTotalResults, getMoviesPage, getMoviesQuery, getTotalResults } from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
@@ -8,6 +8,11 @@ const movieSearchForm = document.getElementById("movieSearchForm");
 function handleBackToResults() {
   clearMovieList();
   renderMovies(getMovies(), handleMovieDetails);
+}
+
+function hasNextPage(totalResults, currentPage) {
+  const totalPages = Math.ceil(Number(totalResults) / 10);
+  return currentPage < totalPages;
 }
 
 async function handleNextPage() {
@@ -52,8 +57,10 @@ async function loadMovies(query, page = 1) {
     setMoviesPage(page);
     setTotalResults(movieData.totalResults);
 
+    const nextPageAvailable = hasNextPage(movieData.totalResults, page);
+
     renderMovies(movies, handleMovieDetails);
-    renderPagination(handleNextPage);
+    renderPagination(handleNextPage, nextPageAvailable);
   } catch (error) {
     showMessage(error.message);
   } finally {

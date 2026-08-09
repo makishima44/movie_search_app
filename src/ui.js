@@ -92,8 +92,12 @@ export function showMovieDetails(movie, onBackClick) {
   movieContainer.append(movieDetailsCard);
 }
 
-export function renderPagination(callback) {
+export function renderPagination(callback, nextPageAvailable) {
   paginationContainer.textContent = "";
+
+  if (!nextPageAvailable) {
+    return;
+  }
 
   const nextButton = document.createElement("button");
   nextButton.textContent = "Следующая";

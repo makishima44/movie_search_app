@@ -11,7 +11,7 @@ export async function searchMovieByTitle(title, page = 1) {
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error(`Произошла ошибка при запросе:, ${error}`);
+    throw new Error(`Произошла ошибка при запросе: ${error.message}`);
   }
 }
 
@@ -26,6 +26,6 @@ export async function fetchMovieDetails(id) {
     const data = await response.json();
     return data;
   } catch (error) {
-    throw new Error(`Произошла ошибка при запросе:, ${error}`);
+    throw new Error(`Произошла ошибка при запросе:, ${error.message}`);
   }
 }
