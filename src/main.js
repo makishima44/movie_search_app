@@ -1,6 +1,19 @@
 import { searchMovieByTitle, fetchMovieDetails } from "./api.js";
 import { showMessage, renderMovies, clearMovieList, showMovieDetails, startSearch, finishSearch, renderPagination } from "./ui.js";
-import { setMovies, getMovies, setMoviesQuery, setMoviesPage, setTotalResults, getMoviesPage, getMoviesQuery, getTotalResults } from "./state.js";
+import {
+  setMovies,
+  getMovies,
+  setMoviesQuery,
+  setMoviesPage,
+  setTotalResults,
+  getMoviesPage,
+  getMoviesQuery,
+  getTotalResults,
+  setQueryToStorage,
+  loadQueryFromStorage,
+  savePageToStorage,
+  loadPageFromStorage,
+} from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
@@ -69,7 +82,9 @@ async function loadMovies(query, page = 1) {
 
     setMovies(movies);
     setMoviesQuery(normalizedQuery);
+    setQueryToStorage(normalizedQuery);
     setMoviesPage(page);
+    savePageToStorage(page);
     setTotalResults(movieData.totalResults);
 
     const nextPageAvailable = hasNextPage(movieData.totalResults, page);
@@ -82,6 +97,17 @@ async function loadMovies(query, page = 1) {
   } finally {
     finishSearch();
   }
+}
+
+async function restoreLastSearch() {
+  const lastMovieQuery = loadQueryFromStorage();
+  const lastMoviePage = loadPageFromStorage();
+
+  if (!lastMovieQuery) {
+    return;
+  }
+
+  await loadMovies(lastMovieQuery, lastMoviePage || 1);
 }
 
 movieSearchForm.addEventListener("submit", async function (event) {
@@ -97,3 +123,6 @@ movieSearchForm.addEventListener("submit", async function (event) {
   await loadMovies(currentMovieTitle);
   movieSearchInput.value = "";
 });
+
+
+restoreLastSearch();

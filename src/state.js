@@ -33,3 +33,19 @@ export function setTotalResults(total) {
 export function getTotalResults() {
   return totalResults;
 }
+
+export function setQueryToStorage(query) {
+  localStorage.setItem("lastMovieQuery", query);
+}
+
+export function loadQueryFromStorage() {
+  return localStorage.getItem("lastMovieQuery");
+}
+
+export function savePageToStorage(page) {
+  localStorage.setItem("lastMoviePage", page);
+}
+
+export function loadPageFromStorage() {
+  return Number(localStorage.getItem("lastMoviePage"));
+}
