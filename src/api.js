@@ -1,6 +1,6 @@
 import { API_KEY } from "./config.js";
 
-export async function searchMovieByTitle(title, page = 1) {
+export async function searchMovieByTitle(title, page ) {
   try {
     const response = await fetch(`https://www.omdbapi.com/?apikey=${API_KEY}&s=${title}&page=${page}`);
 

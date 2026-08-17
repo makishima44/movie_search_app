@@ -13,11 +13,16 @@ import {
   loadQueryFromStorage,
   savePageToStorage,
   loadPageFromStorage,
+  setSort,
+  getSort,
 } from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
 const movieSearchForm = document.getElementById("movieSearchForm");
+const movieSortSelect = document.getElementById("sortSelect");
 
+// Возвращает пользователя со страницы фильма обратно
+// к результатам последнего поиска
 function handleBackToResults() {
   clearMovieList();
   renderMovies(getMovies(), handleMovieDetails);
@@ -34,6 +39,7 @@ function hasPreviousPage(currentPage) {
   return currentPage > 1;
 }
 
+// Загружает следующую страницу результатов.
 async function handleNextPage() {
   const query = getMoviesQuery();
   const currentPage = getMoviesPage();
@@ -42,6 +48,7 @@ async function handleNextPage() {
   await loadMovies(query, nextPage);
 }
 
+// Загружает предыдущую страницу результатов.
 async function handlePreviousPage() {
   const query = getMoviesQuery();
   const currentPage = getMoviesPage();
@@ -50,6 +57,9 @@ async function handlePreviousPage() {
   await loadMovies(query, previousPage);
 }
 
+// Загружает подробную информацию о конкретном фильме.
+// Получает imdbID фильма, делает запрос к API
+// и передаёт полученные данные в UI.
 async function handleMovieDetails(id) {
   try {
     const movieDetails = await fetchMovieDetails(id);
@@ -57,6 +67,21 @@ async function handleMovieDetails(id) {
   } catch (error) {
     showMessage(error.message);
   }
+}
+
+function sortMoviesByYear(sortType) {
+  const movies = getMovies();
+  let sortedMovies;
+
+  if (sortType === "newest") {
+    sortedMovies = [...movies].sort((a, b) => Number(b.Year) - Number(a.Year));
+  } else if (sortType === "oldest") {
+    sortedMovies = [...movies].sort((a, b) => Number(a.Year) - Number(b.Year));
+  } else if (sortType === "none") {
+    sortedMovies = movies;
+  }
+
+  return sortedMovies;
 }
 
 async function loadMovies(query, page = 1) {
@@ -87,10 +112,13 @@ async function loadMovies(query, page = 1) {
     savePageToStorage(page);
     setTotalResults(movieData.totalResults);
 
+    const sortType = getSort();
+    const sortedMovies = sortMoviesByYear(sortType);
+
     const nextPageAvailable = hasNextPage(movieData.totalResults, page);
     const previousPageAvailable = hasPreviousPage(page);
 
-    renderMovies(movies, handleMovieDetails);
+    renderMovies(sortedMovies, handleMovieDetails);
     renderPagination(handleNextPage, nextPageAvailable, handlePreviousPage, previousPageAvailable);
   } catch (error) {
     showMessage(error.message);
@@ -99,6 +127,8 @@ async function loadMovies(query, page = 1) {
   }
 }
 
+// Восстанавливает последний поиск после перезагрузки страницы.
+// Получает сохранённые query и page из localStorage
 async function restoreLastSearch() {
   const lastMovieQuery = loadQueryFromStorage();
   const lastMoviePage = loadPageFromStorage();
@@ -124,5 +154,13 @@ movieSearchForm.addEventListener("submit", async function (event) {
   movieSearchInput.value = "";
 });
 
+movieSortSelect.addEventListener("change", (event) => {
+  const sortType = event.target.value;
+  setSort(sortType);
+  const sortedMovies = sortMoviesByYear(sortType);
+  clearMovieList();
+  renderMovies(sortedMovies, handleMovieDetails);
+});
 
+// При запуске приложения пытаемся восстановить последний поиск из localStorage.
 restoreLastSearch();

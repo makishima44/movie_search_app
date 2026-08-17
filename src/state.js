@@ -2,6 +2,8 @@ let currentMovies = [];
 let currentPage = 1;
 let currentQuery = "";
 let totalResults = 0;
+let currentSort = "none";
+//---------------------------------------------------------------------//
 
 export function setMovies(movies) {
   currentMovies = movies;
@@ -34,6 +36,15 @@ export function getTotalResults() {
   return totalResults;
 }
 
+export function setSort(sortType) {
+  currentSort = sortType;
+}
+
+export function getSort() {
+  return currentSort;
+}
+
+//---------------------------------------------------------------------//
 export function setQueryToStorage(query) {
   localStorage.setItem("lastMovieQuery", query);
 }
