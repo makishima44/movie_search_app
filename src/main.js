@@ -25,7 +25,8 @@ const movieSortSelect = document.getElementById("sortSelect");
 // к результатам последнего поиска
 function handleBackToResults() {
   clearMovieList();
-  renderMovies(getMovies(), handleMovieDetails);
+  const sortType = getSort();
+  renderMovies(sortMoviesByYear(sortType), handleMovieDetails);
 }
 
 // Функция для проверки, доступна ли следующая страница
