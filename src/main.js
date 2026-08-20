@@ -64,6 +64,8 @@ async function handlePreviousPage() {
 async function handleMovieDetails(id) {
   try {
     const movieDetails = await fetchMovieDetails(id);
+    console.log(movieDetails);
+
     showMovieDetails(movieDetails, handleBackToResults);
   } catch (error) {
     showMessage(error.message);

@@ -48,7 +48,7 @@ export function renderMovies(movies, onDetailsClick) {
 }
 
 export function showMovieDetails(movie, onBackClick) {
-  const { Title, Year, Genre, Director, Poster, Plot } = movie;
+  const { Title, Year, Genre, Director, Poster, Plot, Country, imdbRating } = movie;
 
   clearMovieList();
 
@@ -66,6 +66,12 @@ export function showMovieDetails(movie, onBackClick) {
 
   const movieDirector = document.createElement("p");
   movieDirector.textContent = `Режиссёр: ${Director}`;
+
+  const movieCountry = document.createElement("p");
+  movieCountry.textContent = `Страна: ${Country}`;
+
+  const movieImdbRating = document.createElement("p");
+  movieImdbRating.textContent = `Рейтинг IMDB: ${imdbRating}`;
 
   const moviePlot = document.createElement("p");
   moviePlot.textContent = `Сюжет: ${Plot}`;
@@ -88,7 +94,7 @@ export function showMovieDetails(movie, onBackClick) {
     onBackClick();
   });
 
-  movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, moviePlot, backButton);
+  movieDetailsCard.append(movieTitle, movieYear, movieGenre, movieDirector, movieCountry, movieImdbRating, moviePlot, backButton);
   movieContainer.append(movieDetailsCard);
 }
 
