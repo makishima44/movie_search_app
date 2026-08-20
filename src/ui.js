@@ -17,6 +17,9 @@ export function renderMovies(movies, onDetailsClick, onFavoriteClick, isFavorite
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
 
+    const buttonBlock = document.createElement("div");
+    buttonBlock.classList.add("button-block");
+
     const movieTitle = document.createElement("h2");
     movieTitle.textContent = movie.Title;
 
@@ -25,12 +28,15 @@ export function renderMovies(movies, onDetailsClick, onFavoriteClick, isFavorite
 
     const movieDetailsButton = document.createElement("button");
     movieDetailsButton.classList.add("movie-details-button");
+    movieDetailsButton.classList.add("button");
     movieDetailsButton.textContent = "Подробнее";
     movieDetailsButton.addEventListener("click", () => {
       onDetailsClick(movie.imdbID);
     });
 
     const favoriteButton = document.createElement("button");
+    favoriteButton.classList.add("favorite-button");
+    favoriteButton.classList.add("button");
     if (isFavorite(movie.imdbID)) {
       favoriteButton.textContent = "★";
     } else {
@@ -53,7 +59,8 @@ export function renderMovies(movies, onDetailsClick, onFavoriteClick, isFavorite
       movieCard.append(moviePoster);
     }
 
-    movieCard.append(movieTitle, movieYear, movieDetailsButton, favoriteButton);
+    buttonBlock.append(movieDetailsButton, favoriteButton);
+    movieCard.append(movieTitle, movieYear, buttonBlock);
     movieContainer.append(movieCard);
   });
 }

@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
-    <h1>Movie Search</h1>
+    <h1 class="movie-title">Movie Search</h1>
 
-    <main>
+    <div class="header-block">
       <form id="movieSearchForm">
         <input type="text" id="movieSearchInput" placeholder="название фильма" />
         <button type="submit" id="movieSearchButton">Поиск</button>
@@ -20,11 +20,11 @@
         <option value="newest">Сначала новые</option>
         <option value="oldest">Сначала старые</option>
       </select>
+    </div>
+    <div id="loadingContainer"></div>
+    <div id="movieContainer"></div>
+    <div id="paginationContainer"></div>
 
-      <div id="loadingContainer"></div>
-      <div id="movieContainer"></div>
-      <div id="paginationContainer"></div>
-    </main>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
