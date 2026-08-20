@@ -15,6 +15,8 @@ import {
   loadPageFromStorage,
   setSort,
   getSort,
+  toggleFavorite,
+  isFavorite,
 } from "./state.js";
 
 const movieSearchInput = document.getElementById("movieSearchInput");
@@ -26,7 +28,7 @@ const movieSortSelect = document.getElementById("sortSelect");
 function handleBackToResults() {
   clearMovieList();
   const sortType = getSort();
-  renderMovies(sortMoviesByYear(sortType), handleMovieDetails);
+  renderMovies(sortMoviesByYear(sortType), handleMovieDetails, handleFavoriteClick, isFavorite);
 }
 
 // Функция для проверки, доступна ли следующая страница
@@ -64,8 +66,6 @@ async function handlePreviousPage() {
 async function handleMovieDetails(id) {
   try {
     const movieDetails = await fetchMovieDetails(id);
-    console.log(movieDetails);
-
     showMovieDetails(movieDetails, handleBackToResults);
   } catch (error) {
     showMessage(error.message);
@@ -121,7 +121,7 @@ async function loadMovies(query, page = 1) {
     const nextPageAvailable = hasNextPage(movieData.totalResults, page);
     const previousPageAvailable = hasPreviousPage(page);
 
-    renderMovies(sortedMovies, handleMovieDetails);
+    renderMovies(sortedMovies, handleMovieDetails, handleFavoriteClick, isFavorite);
     renderPagination(handleNextPage, nextPageAvailable, handlePreviousPage, previousPageAvailable);
   } catch (error) {
     showMessage(error.message);
@@ -143,6 +143,12 @@ async function restoreLastSearch() {
   await loadMovies(lastMovieQuery, lastMoviePage || 1);
 }
 
+function handleFavoriteClick(movie) {
+  toggleFavorite(movie);
+  clearMovieList();
+  renderMovies(sortMoviesByYear(getSort()), handleMovieDetails, handleFavoriteClick, isFavorite);
+}
+
 movieSearchForm.addEventListener("submit", async function (event) {
   event.preventDefault();
 
@@ -162,7 +168,7 @@ movieSortSelect.addEventListener("change", (event) => {
   setSort(sortType);
   const sortedMovies = sortMoviesByYear(sortType);
   clearMovieList();
-  renderMovies(sortedMovies, handleMovieDetails);
+  renderMovies(sortedMovies, handleMovieDetails, handleFavoriteClick, isFavorite);
 });
 
 // При запуске приложения пытаемся восстановить последний поиск из localStorage.

@@ -3,6 +3,7 @@ let currentPage = 1;
 let currentQuery = "";
 let totalResults = 0;
 let currentSort = "none";
+let favoriteMovies = [];
 //---------------------------------------------------------------------//
 
 export function setMovies(movies) {
@@ -44,6 +45,14 @@ export function getSort() {
   return currentSort;
 }
 
+export function setFavoriteMovies(movies) {
+  favoriteMovies = movies;
+}
+
+export function getFavoriteMovies() {
+  return favoriteMovies;
+}
+
 //---------------------------------------------------------------------//
 export function setQueryToStorage(query) {
   localStorage.setItem("lastMovieQuery", query);
@@ -59,4 +68,22 @@ export function savePageToStorage(page) {
 
 export function loadPageFromStorage() {
   return Number(localStorage.getItem("lastMoviePage"));
+}
+
+export function isFavorite(movieId) {
+  const favoriteMovies = getFavoriteMovies();
+  return favoriteMovies.some((movie) => movie.imdbID === movieId);
+}
+
+export function toggleFavorite(movie) {
+  const favoriteMovies = getFavoriteMovies();
+
+  if (!isFavorite(movie.imdbID)) {
+    setFavoriteMovies([...favoriteMovies, movie]);
+  } else {
+    const updatedFavorites = favoriteMovies.filter((favoriteMovie) => {
+      favoriteMovie.imdbID !== movie.imdbID;
+    });
+    setFavoriteMovies(updatedFavorites);
+  }
 }

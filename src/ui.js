@@ -12,7 +12,7 @@ export function showMessage(message) {
   movieContainer.append(errorMessage);
 }
 
-export function renderMovies(movies, onDetailsClick) {
+export function renderMovies(movies, onDetailsClick, onFavoriteClick, isFavorite) {
   movies.forEach((movie) => {
     const movieCard = document.createElement("div");
     movieCard.classList.add("movie-card");
@@ -30,6 +30,17 @@ export function renderMovies(movies, onDetailsClick) {
       onDetailsClick(movie.imdbID);
     });
 
+    const favoriteButton = document.createElement("button");
+    if (isFavorite(movie.imdbID)) {
+      favoriteButton.textContent = "★";
+    } else {
+      favoriteButton.textContent = "☆";
+    }
+
+    favoriteButton.addEventListener("click", () => {
+      onFavoriteClick(movie);
+    });
+
     if (movie.Poster === "N/A") {
       const noPosterText = document.createElement("p");
       noPosterText.textContent = "Постер отсутствует";
@@ -42,7 +53,7 @@ export function renderMovies(movies, onDetailsClick) {
       movieCard.append(moviePoster);
     }
 
-    movieCard.append(movieTitle, movieYear, movieDetailsButton);
+    movieCard.append(movieTitle, movieYear, movieDetailsButton, favoriteButton);
     movieContainer.append(movieCard);
   });
 }
